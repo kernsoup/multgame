@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenge 5</title>
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-rows: 33% 33% 33%;
+            grid-template-columns: 2fr 1fr 1fr 2fr;
+            text-align: center;
+        }
+        #grand {
+            width: 60%;
+            background-color: aliceblue;
+            animation-name: div;
+            opacity: 100%;
+            animation-duration: 3s;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 10px;         
+        }
+        #input1, #input2, #input3 {
+            width: 40px;
+            font-size: 25px;
+            border-radius: 10px;
+            border-width: 0px;
+            font-family: nunitoFont;
+            margin-top: 5px
+            
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        @font-face {
+            font-family: bubblyFont;
+            src: url(Double_Bubble_shadow.otf);
+        }
+        @font-face {
+            font-family: nunitoFont;
+            src: url(Nunito-VariableFont_wght.ttf);
+        }
+        body {
+            background-image: url('bg1.webp');
+        }
+        @keyframes div {
+            from {opacity: 0%;}
+            to {opacity: 100%;}
+        }
+        h1 {
+            text-align: center;
+            font-family: bubblyFont;
+            color: #6F58C9;
+            font-size: 300%;
+            letter-spacing: 5px;
+        }
+        #medium {
+            border: 6px solid #e8cfa9;
+            padding-left: 10px;
+            margin: 10px;
+        }
+        #check, #show, #reset {
+            background-color: #E0A458;
+            color: white;
+            border: 0px;
+            font-family: nunitoFont;
+            font-size: 30px;
+            padding: 10px;
+            border-radius: 4px;
+            margin-left: 10px;
+            text-align: center;
+        }
+        #check:hover, #show:hover, #reset:hover {
+            cursor: pointer;
+        }
+        #text1, #text2, #text3, #smile1, #smile2, #smile3, #answer1, #answer2, #answer3 {
+           font-size: 25px;
+        }
+        p {
+            font-family: nunitoFont;
+        }
+        #result {
+            margin-left: 10px;
+            font-size: 20px;
+            text-align: center;
+        }
+        @media screen and (max-height: 500px){
+            #grand {
+                position: absolute;
+                width: 80%;
+            }
+        }
+        @media (max-width: 800px){
+            #grand {
+                position: absolute;
+                width: 90%;
+                margin-right: 10px;
+                text-align: center;
+            }
+            #check, #show, #reset {
+                font-size: 17px;
+                text-align: center;
+            }
+            h1 {
+                font-size: 220%;
+            }
+        }
+        #buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            margin-right: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="grand">
+        <h1>MULTIPLICATION GAME&#128171;</h1>
+        <div id="medium">
+        <div class="grid-container">
+            <p id="text1">23 </p><p><input id="input1" type="number"></p><p id="smile1"></p><p id="answer1"></p>
+            <p id="text2">23 </p><p><input id="input2" type="number"></p><p id="smile2"></p><p id="answer2"></p>
+            <p id="text3">23 </p><p><input id="input3" type="number"></p><p id="smile3"></p><p id="answer3"></p>
+        </div>
+        <div id="buttons">
+            <button id="check">✓ Check</button>
+            <button id="reset">↻ Reset</button>
+            <button id="show">5</button>
+        </div>
+        <div><p id="result">bbb</p></div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        let answer1 = reset(1); 
+        let answer2 = reset(2); 
+        let answer3 = reset(3);
+        const resetButton = document.getElementById("reset");
+        resetButton.addEventListener("click", () => {
+            answer1 = reset(1);
+            answer2 = reset(2);
+            answer3 = reset(3);
+        })
+
+        function reset(id) {
+            const first = Math.floor(Math.random() * 9) + 1;
+            const second = Math.floor(Math.random() * 9) + 1;
+            const paragraph = document.getElementById(`text${id}`);
+            paragraph.innerText = `${first} x ${second} = `;
+            document.getElementById(`smile${id}`).innerText = "";
+            document.getElementById(`input${id}`).value = "";
+            document.getElementById(`input${id}`).disabled = false;
+            document.getElementById(`answer${id}`).innerText = "";
+            document.getElementById("result").innerText = "bbb";
+            document.getElementById("result").style.color = "aliceblue";
+            document.getElementById("show").innerText = "⚆ Show";
+            return first * second;
+        }
+
+        const showButton = document.getElementById("show");
+        showButton.addEventListener("click", () => {
+            if (showButton.textContent == "⚆ Show") {
+                if (document.getElementById("input1").disabled == false) {
+                    document.getElementById("result").innerText = "No cheating!";
+                    document.getElementById("result").style.color = "black";
+                } else {
+                    document.getElementById("answer1").textContent = ` Answer: ${answer1}`;
+                    document.getElementById("answer2").textContent = ` Answer: ${answer2}`;
+                    document.getElementById("answer3").textContent = ` Answer: ${answer3}`;
+                    showButton.innerText = "⚆ Hide";
+                }
+            } else {
+                document.getElementById("answer1").innerText = "";
+                document.getElementById("answer2").innerText = "";
+                document.getElementById("answer3").innerText = "";
+                showButton.innerText = "⚆ Show";
+            }
+        })
+
+        const checkButton = document.getElementById("check");
+        checkButton.addEventListener("click", () => {
+            if (document.getElementById("input1").value == "" || document.getElementById("input2").value == "" ||
+                document.getElementById("input3").value == "") {
+                    document.getElementById("result").innerText = "Enter all the answers!";
+                    document.getElementById("result").style.color = "black";
+            } else {
+                const result = check(1, answer1) + check(2, answer2) + check(3, answer3);
+                const resultField = document.getElementById("result");
+            if (result == 3) {
+                resultField.innerText = "All right! Good job!"
+                resultField.style.color = "green";
+            } else {
+                resultField.innerText = `${result} / 3, keep practising!`;
+                resultField.style.color = "red";
+                }
+            } 
+        })
+
+        function check(id, ans) {
+            document.getElementById(`input${id}`).disabled = true;
+            const text = document.getElementById(`smile${id}`);
+            const givenAnswer = document.getElementById(`input${id}`).value;
+            if (givenAnswer == ans) {
+                text.innerText = "^_^";
+                text.style.color = "green";
+                return 1;
+            } else {
+                text.innerText = ":(";
+                text.style.color = "red";
+                return 0;
+            }
+        }
+    </script>
+</body>
+</html>
